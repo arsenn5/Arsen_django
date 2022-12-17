@@ -5,9 +5,9 @@
             display: flex;
             justify-content: space-between;
             width: 80%;
-            margin-left: 30%;
+            margin-left: 10%;
             flex-wrap: wrap;
-            padding: 20px;
+            padding: 10px;
         }
     </style>
     <div class="products">
@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.title }}</h5>
                     <h6 class="card-subtitle">{{ product.created_date }}</h6>
-                    <a href="/products/" class="card-link">More</a>
+                    <a href="/products/{{ product.id }}/" class="card-link">More</a>
                 </div>
             </div>
         {% endfor %}

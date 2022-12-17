@@ -1,0 +1,59 @@
+{% extends 'layouts/index.html' %}
+
+
+{% block content %}
+    <style type="text/css">
+        .product {
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        .product > h5 {
+            margin-top: 20px;
+        }
+
+        .dates {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .review {
+            margin-top: 30px;
+        }
+
+        .review_block {
+            height: max-content;
+            padding: 10px;
+            border: 1px solid #242b2e;
+            color: #242b2e;
+            background: black;
+        }
+        .review{
+            margin-top: 30px;
+        }
+        .review_block {
+            height: max-content;
+            padding: 10px;
+            border: 1px solid #242b2e;
+            color: cadetblue;
+        }
+    </style>
+    <div class="product">
+        <h1>{{ product.title }}</h1>
+        <h5>{{ product.description }}</h5>
+        <div class="dates">
+            <h5>{{ product.created_date }}</h5>
+            <h5>{{ product.modifed_date }}</h5>
+        </div>
+        <div class="review">
+            {% for review in review %}
+                <div class="review_block">
+                    <h6>{{ review.text }}</h6>
+                    <p>{{ review.created_date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
+
