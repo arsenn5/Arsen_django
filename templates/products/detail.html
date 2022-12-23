@@ -42,8 +42,16 @@
             border: 1px solid #242b2e;
             color: cadetblue;
         }
+        .product{
+            width: 100%;
+        }
     </style>
     <div class="product">
+        {% if product.image %}
+            <img src="/media/{{ product.image }}/" alt="">
+        {% else %}
+            <img src="/media/istockphoto-1357365823-170667a.jpg" alt="">
+        {% endif %}
         <h1>{{ product.title }}</h1>
         <h5>{{ product.description }}</h5>
         <div class="dates">
