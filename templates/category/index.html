@@ -1,0 +1,9 @@
+{% extends 'layouts/index.html' %}
+
+{% block content %}
+    <div class="categories">
+        {% for categori in category %}
+            <p><a href="/products/?category_id={{ categori.id }}">{{ categori.title }}</a><p>
+        {% endfor %}
+    </div>
+{% endblock %}

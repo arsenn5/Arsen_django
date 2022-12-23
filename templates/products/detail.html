@@ -3,6 +3,9 @@
 
 {% block content %}
     <style type="text/css">
+        .category {
+            font-size: ;
+        }
         .product {
             width: 80%;
             margin-left: 10%;
@@ -28,9 +31,11 @@
             color: #242b2e;
             background: black;
         }
-        .review{
+
+        .review {
             margin-top: 30px;
         }
+
         .review_block {
             height: max-content;
             padding: 10px;
@@ -46,6 +51,13 @@
             <h5>{{ product.modifed_date }}</h5>
         </div>
         <div class="review">
+            <div class="category">
+                    {% for categori in category %}
+                        <div class="category">
+                            <h6>{{ categori.title }}</h6>
+                        </div>
+                    {% endfor %}
+                </div>
             {% for review in review %}
                 <div class="review_block">
                     <h6>{{ review.text }}</h6>
@@ -53,7 +65,5 @@
                 </div>
             {% endfor %}
         </div>
-
     </div>
 {% endblock %}
-
