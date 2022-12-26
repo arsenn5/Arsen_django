@@ -1,0 +1,17 @@
+{% extends 'layouts/index.html' %}
+
+{% block content %}
+    <div class="form">
+        <form action="/product/create" method="post">
+            {% csrf_token %}
+            <p>Title {{ title_error }}</p>
+            <input type="text" name="title">
+            <p>Description {{ description_errors }}</p>
+            <textarea name="description" id="" cols="30" rows="10"></textarea>
+            <p>Rate</p>
+            <input type="number" name="rate">
+
+            <input type="submit" class="btn-primary">
+        </form>
+    </div>
+{% endblock %}

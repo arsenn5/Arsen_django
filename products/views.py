@@ -1,5 +1,7 @@
-from django.shortcuts import HttpResponse, render
-from products.models import Products, Category
+from django.shortcuts import render, redirect
+
+from products.forms import ReviewCreateForm
+from products.models import Products, Category, Review
 
 
 # Create your views here.
@@ -21,13 +23,31 @@ def products_view(request):
 def products_detail_view(request, id):
     if request.method == 'GET':
         product = Products.objects.get(id=id)
-        print(product)
+
         data = {
             'product': product,
             'review': product.review.all(),
-            'category': product.category.all()
+            'category': product.category.all(),
+            'review_form': ReviewCreateForm
         }
         return render(request, 'products/detail.html', context=data)
+    if request.method == 'POST':
+        product = Products.objects.get(id=id)
+        form = ReviewCreateForm(data=request.POST)
+
+        if form.is_valid():
+            Review.objects.create(
+                product_id=id,
+                text=form.cleaned_data.get('text')
+            )
+            return redirect(f'/products/{id}/')
+        else:
+            return render(request, 'products/detail.html', context={
+                'product': product,
+                'review': product.review.all(),
+                'category': product.category.all(),
+                'review_form': form
+            })
 
 
 def categories_view(request):
@@ -38,3 +58,24 @@ def categories_view(request):
             'category': category
         }
         return render(request, 'category/index.html', context=context)
+
+
+def post_create_view(request, **kwargs):
+    if request.method == 'GET':
+        return render(request, 'products/create.html')
+
+    if request.method == 'POST':
+        errors = {}
+
+        if len(request.POST.get('title')) < 8:
+            errors['title_error'] = 'min length 8'
+
+        if len(request.POST.get('description')) < 1:
+            errors['description_errors'] = 'this field required'
+
+        Products.objects.create(
+            title=request.POST.get('title'),
+            description=request.POST.get('description'),
+            rate=request.POST.get('rate', 0)
+        )
+        return redirect(f"/products/")

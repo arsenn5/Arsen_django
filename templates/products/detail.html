@@ -4,8 +4,9 @@
 {% block content %}
     <style type="text/css">
         .category {
-            font-size: ;
+            font-size: 34px;
         }
+
         .product {
             width: 80%;
             margin-left: 10%;
@@ -42,7 +43,8 @@
             border: 1px solid #242b2e;
             color: cadetblue;
         }
-        .product{
+
+        .product {
             width: 100%;
         }
     </style>
@@ -58,14 +60,19 @@
             <h5>{{ product.created_date }}</h5>
             <h5>{{ product.modifed_date }}</h5>
         </div>
+        <form action="/products/{{ product.id }}/" method="post">
+            {% csrf_token %}
+            {{ review_form }}
+            <input type="submit" class="btn">
+        </form>
         <div class="review">
             <div class="category">
-                    {% for categori in category %}
-                        <div class="category">
-                            <h6>{{ categori.title }}</h6>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for categori in category %}
+                    <div class="category">
+                        <h6>{{ categori.title }}</h6>
+                    </div>
+                {% endfor %}
+            </div>
             {% for review in review %}
                 <div class="review_block">
                     <h6>{{ review.text }}</h6>
