@@ -32,11 +32,33 @@
                     <a class="nav-link" href="/products">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/categories">Category</a>
+                    <a class="nav-link" href="/categories">
+                        <button type='button' class="btn btn-secondary"> Category</button>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/product/create">Create Post</a>
-                </li>
+                {% if user %}
+                    <li class="nav-item">
+                        <a href="/product/create">
+                            <button type="button" class="btn btn-danger">Create Post</button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/users/logout">
+                            <button type="button" class="btn btn-danger">Logout</button>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="/users/login/">
+                            <button type="button" class="btn btn-danger">Login</button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/users/register/">
+                            <button type="button" class="btn btn-danger">Register</button>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

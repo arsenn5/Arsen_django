@@ -75,6 +75,7 @@
             </div>
             {% for review in review %}
                 <div class="review_block">
+                    <h6>{{ review.author }}</h6>
                     <h6>{{ review.text }}</h6>
                     <p>{{ review.created_date }}</p>
                 </div>
