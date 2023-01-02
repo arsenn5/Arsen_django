@@ -4,6 +4,8 @@ from users.utils import get_user_from_request
 from products.forms import ReviewCreateForm
 from products.models import Products, Category, Review
 
+PAGINATION_LIMIT = 6
+
 
 # Create your views here.
 
@@ -16,11 +18,28 @@ def products_view(request):
     if request.method == 'GET':
         products = Products.objects.all()
         category_id = request.GET.get('category_id', None)
+        search = request.GET.get('search')
+        page = int(request.GET.get('page', 1))
+
         if category_id:
             products = products.filter(category__in=[category_id])
+        if search:
+            products = products.filter(title__icontains=search)
+
+
+        max_page = products.__len__() / PAGINATION_LIMIT
+
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
+
+        products = products[PAGINATION_LIMIT * (page-1):PAGINATION_LIMIT * page]
+
+
+
         return render(request, 'products/products.html', context={
             'products': products,
-            'user': get_user_from_request(request)
+            'user': get_user_from_request(request),
+            'maх_page': range(1, max_page + 1)
         })
 
 
