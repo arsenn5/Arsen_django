@@ -23,23 +23,22 @@ def products_view(request):
 
         if category_id:
             products = products.filter(category__in=[category_id])
+
         if search:
             products = products.filter(title__icontains=search)
-
 
         max_page = products.__len__() / PAGINATION_LIMIT
 
         if round(max_page) < max_page:
             max_page = round(max_page) + 1
 
-        products = products[PAGINATION_LIMIT * (page-1):PAGINATION_LIMIT * page]
-
-
+        print(max_page)
+        products = products[PAGINATION_LIMIT * (page - 1):PAGINATION_LIMIT * page]
 
         return render(request, 'products/products.html', context={
             'products': products,
             'user': get_user_from_request(request),
-            'maх_page': range(1, max_page + 1)
+            'maх_page': range(1, round(max_page) + 1)
         })
 
 
