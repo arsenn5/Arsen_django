@@ -62,7 +62,7 @@
         </div>
         <form action="/products/{{ product.id }}/" method="post">
             {% csrf_token %}
-            {{ review_form }}
+            {{ form }}
             <input type="submit" class="btn">
         </form>
         <div class="review">

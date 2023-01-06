@@ -3,54 +3,61 @@ from django.shortcuts import render, redirect
 from users.forms import LoginForm, RegisterForm
 from django.contrib.auth.models import User
 from users.utils import get_user_from_request
+from django.views.generic import CreateView, ListView
 
 
 # Create your views here.
 
-def login_view(request):
-    if request.method == 'GET':
-        context = {
-            'form': LoginForm,
-            'user': get_user_from_request(request)
+
+class LoginViewCBV(CreateView):
+    template_name = 'user/login.html'
+    form_class = LoginForm
+    success_url = '/products/'
+
+    def get_context_data(self, **kwargs):
+        return {
+            'form': self.form_class
         }
 
-        return render(request, 'user/login.html', context=context)
+    def post(self, request, *args, **kwargs):
 
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
+        if request.method == 'POST':
+            form = LoginForm(data=request.POST)
 
-        if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data.get('username'),
-                password=form.cleaned_data.get('password')
-            )
+            if form.is_valid():
+                user = authenticate(
+                    username=form.cleaned_data.get('username'),
+                    password=form.cleaned_data.get('password')
+                )
 
-            if user:
-                login(request, user=user)
-                return redirect('/products/')
-            else:
-                form.add_error('username', 'bad request!')
+                if user:
+                    login(request, user=user)
+                    return redirect('/products/')
+                else:
+                    form.add_error('username', 'bad request!')
 
-        return render(request, 'user/login.html', context={
-            'form': form,
-            'user': get_user_from_request(request)
-        })
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('/products/')
+            return render(request, 'user/login.html', context={
+                'form': form,
+                'user': get_user_from_request(request)
+            })
 
 
-def register_view(request):
-    if request.method == 'GET':
-        context = {
-            'form': RegisterForm,
-            'user': get_user_from_request(request)
+class LogoutCBV(ListView):
+    def get(self, request, **kwargs):
+        logout(request)
+        return redirect('/products/')
+
+
+class RegisterCBV(CreateView):
+    template_name = 'user/register.html'
+    form_class = RegisterForm
+
+    def get_context_data(self, **kwargs):
+        return {
+            'form': self.form_class
         }
-        return render(request, 'user/register.html', context=context)
 
-    if request.method == 'POST':
+    def post(self, request, *args, **kwargs):
         form = RegisterForm(data=request.POST)
 
         if form.is_valid():
@@ -66,7 +73,7 @@ def register_view(request):
             else:
                 form.add_error('password2', 'bad request!')
 
-        return render(request, 'user/register.html', context={
+        return render(request, self.template_name, context={
             'form': form,
             'user': get_user_from_request(request)
         })
